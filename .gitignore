@@ -1,0 +1,11 @@
+# ignore environment variables and local dev settings
+.env.dev
+.env
+.env.prod
+
+# ignore frontend package files
+node_modules
+build
+public/build
+assets
+
