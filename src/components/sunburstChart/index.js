@@ -359,9 +359,7 @@ export function SunburstChart({ bridgeConditionData, field, submitted }) {
 
   return html`
     ${!isEmpty(bridgeConditionData) && rootValue !== 0
-      ? html`<${Grid} item xs=${12}>
-    <${Typography} variant="h4" component="h1">Sunburst Plot</${Typography}>
-    </${Grid}>
+      ? html`
     <${Grid} item xs=${12} sx=${{ paddingTop: 0 }}>
     <svg class="d3-component"
          viewBox="0 0 ${width} ${height}"

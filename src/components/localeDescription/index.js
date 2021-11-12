@@ -173,6 +173,7 @@ export function LocaleDescription({ summaryType, keyValues, waiting, submitted }
   useEffect(() => {
     if (!waiting) {
     const { plot_type, ...filters} = keyValues.filters;
+      console.log(filters)
     setActiveFilters(filters)
     }
   }, [summaryType, keyValues])
