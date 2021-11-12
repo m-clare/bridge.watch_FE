@@ -24,7 +24,8 @@ html`
 <${ThemeProvider} theme=${THEME}>
   <div id="app">
     <${Header} />
-    <div style=${"position: relative; min-height: 100vh;"}>
+    <div style=${"position: relative; min-height: 100vh; padding-top: 60px"}>
+    
     <${Router}>
       <${CountryBridges} path="/" />
       <${About} path="/about" />

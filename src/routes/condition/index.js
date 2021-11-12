@@ -51,7 +51,7 @@ export default function ConditionBridges() {
     material: [],
     type: [],
     service: [],
-    state: ["California"],
+    state: [],
   });
   const [field, setField] = useState(queryState.field)
   const [queryURI, setQueryURI] = useState("");
@@ -122,6 +122,16 @@ export default function ConditionBridges() {
             <${Grid} item xs=${12}>
               <${Typography} variant="h4" component="h1">Bridge Conditions</${Typography}>
             </${Grid}>
+            <${QueryForm} queryState=${queryState}
+                          handleChange=${handleChange}
+                          handleClose=${handleFormClose}
+                          handleSingleChange=${handleSingleChange}
+                          submitted=${renderSubmitted}
+                          plotChoices=${singleFilters.field}
+                          filters=${stateFilters}
+                          handleClick=${handleClick}
+                          colWidth=${colWidth}
+                          />
             <${Grid} item xs=${12}>
               ${renderSubmitted ? html`
               <${Paper} sx=${{padding: 2}} variant="outlined">
@@ -142,7 +152,8 @@ export default function ConditionBridges() {
           <${Grid} container spacing=${3}>
             ${
             !isEmpty(conditionBridges) &&
-            !conditionBridges.hasOwnProperty("message")
+            !conditionBridges.hasOwnProperty("message") &&
+            showPlot
             ? html`
            <${SunburstChart}
               bridgeConditionData=${conditionBridges}

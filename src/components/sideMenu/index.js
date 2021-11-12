@@ -17,6 +17,7 @@ const routes = [
 { key: 'U.S. Overview', value: '/country'},
 { key: 'Info By State', value: '/state'},
 { key: 'Info By Material', value: '/material'},
+{ key: 'Info By Condition', value: '/condition'},
 ]
 
 const backgroundRoutes = [
