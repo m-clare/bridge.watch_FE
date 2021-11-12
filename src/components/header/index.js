@@ -29,14 +29,18 @@ export default function Header() {
       </${Typography}>
       <${Box} sx=${{display: {xs: "none", md: "inline"}}}>
           <${Button} sx=${{px: 2}}  color="inherit"><${RouterLink} href='/country'
-                                                     style=${"color: #fff; text-decoration: none"}>
+                                                                   style=${"color: #fff; text-decoration: none"}>
               U.S. Overview</${RouterLink}>
           </${Button}>
           <${Button} sx=${{px: 2}} color="inherit"><${RouterLink} href='/state'
-                                                    style=${"color: #fff; text-decoration: none"}>
+                                                                  style=${"color: #fff; text-decoration: none"}>
               Info By State</${RouterLink}>
           </${Button}>
           <${TopMenu}/>
+          <${Button} sx=${{px: 2}} color="inherit"><${RouterLink} href='/about'
+                                                                  style=${"color: #fff; text-decoration: none"}>
+              About</${RouterLink}>
+          </${Button}>
       </${Box}>
     </${Toolbar}>
   </${AppBar}>
