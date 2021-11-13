@@ -187,6 +187,7 @@ export default function ConditionBridges() {
               bridgeConditionData=${conditionBridges}
               field=${renderField}
               submitted=${renderSubmitted}
+              chartID="SunburstDiagram"
               />`
             : null
             }
