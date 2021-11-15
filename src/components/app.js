@@ -9,7 +9,6 @@ import Footer from "./footer";
 import { makeStyles } from "@mui/styles";
 import theme from "./theme";
 // Code-splitting is automated for `routes` directory
-import Home from "../routes/home";
 import CountryBridges from "../routes/country";
 import StateBridges from "../routes/state";
 import ConditionBridges from "../routes/condition";

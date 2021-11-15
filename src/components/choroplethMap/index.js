@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 
 import * as d3 from "d3";
 import { hexbin } from "d3-hexbin";
-import { mesh } from "topojson-client";
 import { feature } from "topojson-client";
 import { legend } from "../colorLegend";
 import us from "us-atlas/counties-albers-10m.json";
@@ -21,7 +20,6 @@ import { HorizontalPropertyPanel } from "../../components/horizontalPropertyPane
 
 import { stateOptions } from "../../components/options";
 
-import useMediaQuery from "@mui/material/useMediaQuery";
 const html = htm.bind(h);
 
 // Based on Choropleth Chart from Observable, attribution below

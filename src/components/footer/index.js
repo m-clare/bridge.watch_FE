@@ -16,24 +16,11 @@ import Container from "@mui/material/Container"
 import { makeStyles } from "@mui/styles";
 import { useEffect } from 'react';
 import KofiButton from "kofi-button"
-import useMediaQuery from "@mui/material/useMediaQuery";
 import background from "../../assets/blue_wallpaper.png"
 const html = htm.bind(h);
 
 
 export default function Footer() {
-  const widthCheck = useMediaQuery("(min-width:600)")
-
-  let kofiAlignment;
-  let RCAlignment;
-
-  if (widthCheck) {
-    kofiAlignment = "flex-start"
-    RCAlignment = "flex-end"
-  } else {
-    kofiAlignment = "center"
-    RCAlignment = "center"
-  }
 
   return html`
 <${Box} sx=${{ flexGrow: 1, padding: 2, boxShadow: 3, bgcolor: "primary.main", color: "primary.contrastText", backgroundImage: `url(${background})`, backgroundSize: "150px auto"}} >
