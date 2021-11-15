@@ -23,6 +23,11 @@ import Switch from "@mui/material/Switch";
 import useMediaQuery from "@mui/material/useMediaQuery";
 const html = htm.bind(h);
 
+// Based on Hexbin Chart from Observable, attribution below
+// Copyright 2021 Observable, Inc.
+// Released under the ISC license.
+// https://observablehq.com/@d3/hexbin-map
+
 // Constant values for scaling, aspectRatio, etc.
 const width = 975;
 const height = 610;

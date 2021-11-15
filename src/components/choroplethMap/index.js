@@ -24,6 +24,11 @@ import { stateOptions } from "../../components/options";
 import useMediaQuery from "@mui/material/useMediaQuery";
 const html = htm.bind(h);
 
+// Based on Choropleth Chart from Observable, attribution below
+// Copyright 2021 Observable, Inc.
+// Released under the ISC license.
+// https://observablehq.com/@d3/choropleth
+
 // Constant values for scaling, aspectRatio, etc.
 const width = 975;
 const height = 610;
@@ -71,33 +76,12 @@ function getSelectedStates(states, us) {
   return newStates;
 }
 
-const getCountyNode = (svg) => {
-  if (!document.getElementById("Counties")) {
-    svg.append("g").attr("id", "Counties");
+const getNodeById = (svg, id) => {
+  if (svg.select("#" + id).empty()) {
+    svg.append("g").attr("id", id);
   }
-  return svg.select("#Counties");
-};
-
-const getAllCountyNode = (svg) => {
-  if (!document.getElementById("AllCounties")) {
-    svg.append("g").attr("id", "AllCounties");
-  }
-  return svg.select("#AllCounties");
-};
-
-const getLegend = (svg) => {
-  if (!document.getElementById("legendContainer")) {
-    svg.append("g").attr("id", "legendContainer");
-  }
-  return svg.select("#legendContainer");
-};
-
-const getAttribution = (svg) => {
-  if (!document.getElementById("attributionContainer")) {
-    svg.append("g").attr("id", "attributionContainer");
-  }
-  return svg.select("#attributionContainer");
-};
+  return svg.select("#" + id)
+}
 
 export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submitted }) {
   const [activeCounty, setActiveCounty] = useState({});
@@ -136,25 +120,20 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
       );
       const path = d3.geoPath(projection);
 
-      const svgCounties = getAllCountyNode(svg);
+      const svgCounties = getNodeById(svg, "AllCounties")
 
       svgCounties
         .selectAll("path")
         .data(selectedCounties.features)
         .join("path")
         .attr("fill", "none")
-        .attr("d", path);
-
-      svgCounties
-        .join("path")
-        .datum(mesh(us, us.objects.counties, (a, b) => a !== b))
-        .attr("fill", "none")
         .attr("stroke", "#777")
         .attr("stroke-linejoin", "round")
         .attr("d", path);
+
     } else {
       const svg = d3.select(d3Container.current);
-      const svgCounties = getAllCountyNode(svg);
+      const svgCounties = getNodeById(svg, "AllCounties")
       svg.remove(svgCounties);
     }
   }, [bridgeCountyData]);
@@ -178,7 +157,7 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
         .append("div")
         .style("position", "absolute")
         .style("z-index", "10")
-        .attr("class", "tooltooltip")
+        .attr("class", "tooltip")
         .style("visibility", "hidden")
         .style("font-family", "Fira Sans")
         .style("font-size", "0.8rem")
@@ -210,7 +189,8 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
       
 
       // add legend
-      const legendNode = getLegend(svg);
+      // const legendNode = getLegend(svg);
+      const legendNode = getNodeById(svg, "LegendContainer")
       legendNode.select("#legend").remove();
 
       legendNode
@@ -230,12 +210,17 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
         );
 
       // add counties with data
-      const svgCounties = getCountyNode(svg);
+      // const svgCounties = getCountyNode(svg);
+      const svgCounties = getNodeById(svg, "Counties")
+
       svgCounties
         .selectAll("path")
         .data(countyMerged)
         .join("path")
         .attr("fill", (d) => color(getInterestValue(plotType, d).value))
+        .attr("stroke", "#000")
+        .attr("stroke-width", "0.05em")
+        .attr("stroke-linejoin", "round")
         .attr("d", path)
         .on("mouseover", function (e, d) {
           tooltip
@@ -270,17 +255,9 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
             .attr("stroke", "#000");
         });
 
-      svgCounties
-        .join("path")
-        .datum(mesh(us, us.objects.counties, (a, b) => a !== b))
-        .attr("fill", "none")
-        .attr("stroke", "#000")
-        .attr("stroke-width", "0.05em")
-        .attr("stroke-linejoin", "round")
-        .attr("d", path);
 
       //add attribution
-      const attrNode = getAttribution(svg);
+      const attrNode = getNodeById(svg, "AttributionContainer")
       attrNode.select("#attribution").remove();
 
       attrNode
@@ -298,7 +275,7 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
 
     } else if (displayStates.length === 0) {
       const svg = d3.select(d3Container.current);
-      const svgCounties = getCountyNode(svg);
+      const svgCounties = getNodeById(svg, "Counties")
       svg.remove(svgCounties);
     }
   }, [bridgeCountyData, plotType]);

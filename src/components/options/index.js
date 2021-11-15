@@ -140,10 +140,6 @@ export const fieldOptions = {
     query: "service",
     display: "Group by type of service on bridge",
   },
-  state: {
-    query: "state",
-    display: "State"
-  }
 }
 
 export const detailedOptions = {
@@ -169,12 +165,21 @@ export const singleFilters = {
     'label': 'Field',
     'options': fieldOptions
   },
-  state: {
-    'name': 'state',
-    'label': 'State',
+}
+
+export const stateSingleFilters = {
+  stateOne: {
+    'name': 'stateOne',
+    'label': 'State One',
     'options': stateOptions,
     'query': 'state'
-  }
+  },
+  stateTwo: {
+    'name': 'stateTwo',
+    'label': 'State Two',
+    'options': stateOptions,
+    'query': 'state'
+  }  
 }
 
 export const multiFilters = {
