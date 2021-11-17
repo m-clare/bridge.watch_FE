@@ -44,6 +44,12 @@ export default function TopMenu() {
             Bridge Types
           </${RouterLink}>
         </${MenuItem}>
+         <${MenuItem} onClick=${handleClose}>
+          <${RouterLink} href='/bridge_materials'
+                         style=${"color: #1c5d99; text-decoration: none; font-variant: small-caps"}>
+            Bridge Materials
+          </${RouterLink}>
+        </${MenuItem}>
       </${Menu}>
 `)
 }

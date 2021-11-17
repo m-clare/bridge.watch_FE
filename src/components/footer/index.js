@@ -16,7 +16,7 @@ import Container from "@mui/material/Container"
 import { makeStyles } from "@mui/styles";
 import { useEffect } from 'react';
 import KofiButton from "kofi-button"
-import background from "../../assets/blue_wallpaper.png"
+import background from "../../assets/blue_wallpaper.webp"
 const html = htm.bind(h);
 
 

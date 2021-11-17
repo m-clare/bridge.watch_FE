@@ -42,6 +42,25 @@ function constructURI(query) {
   return uriString
 }
 
+function fixDateData(data) {
+  if (!data.totalValues) {
+    return data
+  }
+  data.totalValues = data.totalValues.map(d => ({...d, 'future_date_of_inspection': new Date(d.future_date_of_inspection)}))
+  let keyValues = data.keyData
+  data.keyData.min = new Date(keyValues.min)
+  data.keyData.max = new Date(keyValues.max)
+  data.keyData.mode = new Date(keyValues.mode)
+  data.hexBin.forEach(d => {
+    d.objKeyValues.min = new Date(d.objKeyValues.min)
+    d.objKeyValues.max = new Date(d.objKeyValues.max)
+    d.objKeyValues.mode = new Date(d.objKeyValues.mode)
+    d.objHistogram = d.objHistogram.map(f => ({...f, "future_date_of_inspection": new Date(f.future_date_of_inspection)}))
+  }
+                        )
+  return data
+}
+
 function updateQuery(queryState, type, updatedParam) {
   return {...queryState, [type]: updatedParam}
 }
@@ -96,8 +115,11 @@ export default function CountryBridges() {
 
   useEffect(async () => {
     const newURI = constructURI(queryState)
-    const bridgeData = await getNationalBridges(newURI);
+    let bridgeData = await getNationalBridges(newURI);
     setQueryURI(newURI);
+    if (queryState.plot_type === "future_date_of_inspection") {
+      bridgeData = fixDateData(bridgeData)
+    }
     setBridges(bridgeData);
     setSubmitted(false);
     setWaiting(false);

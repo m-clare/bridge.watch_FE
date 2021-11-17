@@ -23,7 +23,6 @@ const routes = [
 const backgroundRoutes = [
   { key: "Bridge Types", value: "/bridge_types" },
   { key: "Bridge Materials", value: "/bridge_materials" },
-  { key: "Bridge Rating Information", value: "/rating_info" },
 ];
 
 const useStyles = makeStyles({

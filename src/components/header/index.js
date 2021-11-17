@@ -15,8 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import TopMenu from "../topMenu";
 import SideMenu from "../sideMenu";
 import Grid from "@mui/material/Grid";
-import masthead from "../../assets/masthead.png";
-import background from "../../assets/blue_wallpaper.png";
+import masthead from "../../assets/masthead.webp";
+import background from "../../assets/blue_wallpaper.webp";
 
 const html = htm.bind(h);
 

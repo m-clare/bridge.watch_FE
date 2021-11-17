@@ -13,6 +13,7 @@ import { legend } from "../colorLegend";
 import us from "us-atlas/counties-albers-10m.json";
 import { isEmpty } from "lodash-es";
 import { colorDict } from "../colorPalette";
+import { grey } from "@mui/material/colors";
 
 import { BarChart } from "../../components/barChart";
 import { HistTextSummary } from "../../components/histTextSummary";
@@ -40,6 +41,7 @@ const tickExtremes = {
   repair_cost_per_foot: ["$1,000", "$100,000"],
 };
 
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const getInterestValue = (plotType, countyValues) => {
   if (plotType === "percent_poor") {
     const histogram = countyValues.objHistogram;
@@ -51,6 +53,14 @@ const getInterestValue = (plotType, countyValues) => {
       histogram[4].count;
     const value = Math.round((numPoor / countyValues.count) * 100);
     const stringDescription = "Rated below 4: " + value + "%";
+    return { stringDescription: stringDescription, value: value };
+  } else if (plotType === "future_date_of_inspection") {
+    const value = countyValues.objKeyValues.mode
+    const stringDescription = "Most common value: " + monthNames[value.getMonth()] + '-' + value.getFullYear()
+    return { stringDescription: stringDescription, value: value };
+  } else if (plotType === "average_daily_traffic" || "truck_traffic") {
+    const value = Math.round(countyValues.objKeyValues.avg);
+    const stringDescription = "Average value: " + value;
     return { stringDescription: stringDescription, value: value };
   } else {
     return {
@@ -144,6 +154,8 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
 
   useEffect(() => {
     if (!isEmpty(bridgeCountyData) && d3Container.current && !submitted) {
+
+      console.log(plotType)
       const svg = d3.select(d3Container.current);
       const color = colorDict[plotType];
 
@@ -184,12 +196,22 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
         });
       }
 
-      
-
       // add legend
       // const legendNode = getLegend(svg);
       const legendNode = getNodeById(svg, "LegendContainer")
       legendNode.select("#legend").remove();
+
+      // every other tick value
+      const tickFormatting = (interval, i) => {
+        let modInterval
+        if (plotType === "future_date_of_inspection") {
+          let modDate = new Date(interval)
+          modInterval = monthNames[modDate.getMonth()] + '-' + modDate.getFullYear()
+        } else {
+          modInterval = interval
+        }
+        return i % 2 !== 0 ? " " : modInterval;
+      }
 
       legendNode
         .attr(
@@ -200,7 +222,7 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
           legend({
             color: color,
             width: width * 0.3,
-            tickFormat: ".0f",
+            tickFormat: tickFormatting,
             tickSize: 0,
             ticks: 8,
             tickExtremes: tickExtremes[plotType],
@@ -290,23 +312,31 @@ export function ChoroplethMap({ bridgeCountyData, displayStates, plotType, submi
     ${displayStates.length !== 0 && !isEmpty(bridgeCountyData)
       ? html`<${Grid} item xs=${12}>
     <${Typography} variant="h4" component="h1">${title}</${Typography}>
-    </${Grid}>
-    <${Grid} item xs=${12} sx=${{ paddingTop: 0 }}>
+  </${Grid}>
+  <${Grid} item xs=${12} sx=${{ paddingTop: 0 }}>
     <svg class="d3-component"
-  viewBox="0 0 ${width} ${height}"
-  ref=${d3Container}
-    >
+         viewBox="0 0 ${width} ${height}"
+         ref=${d3Container}
+         >
     </svg>
+  </${Grid}>
+    <${Grid} item sx=${{textAlign: "center"}} style=${{paddingTop: "0px"}} xs=${12}>
+    <${Typography}
+  variant="overline"
+  color=${grey[500]}>
+    Hover or click to update the histogram.
+    </${Typography}>
     </${Grid}>
-    <${Grid} item xs=${12}>
+  <${Grid} item xs=${12}>
     <${HorizontalPropertyPanel} objSelected=${countySelected}
-  objData=${activeCounty}
-  initialHistData=${totalValues}
-  initialKeyData=${bridgeCountyData.keyData}
-  field=${bridgeCountyData.field}
-  plotHeight=${plotHeight}
-  />
-    </${Grid}>`
-      : null}
+                                objData=${activeCounty}
+                                initialHistData=${totalValues}
+                                initialKeyData=${bridgeCountyData.keyData}
+                                field=${bridgeCountyData.field}
+                                plotHeight=${plotHeight}
+                                />
+  </${Grid}>`
+  : null}
   `;
 }
+  

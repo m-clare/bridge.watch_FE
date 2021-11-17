@@ -14,6 +14,7 @@ import StateBridges from "../routes/state";
 import ConditionBridges from "../routes/condition";
 import About from "../routes/about";
 import BridgeTypes from "../routes/bridgeTypes";
+import BridgeMaterials from "../routes/bridgeMaterials";
 import HeadToHead from "../routes/headToHead";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Fab from "@mui/material/Fab";
@@ -68,6 +69,7 @@ const App = () =>
       <${CountryBridges} path="/" />
       <${About} path="/about" />
       <${BridgeTypes} path="/bridge_types" />
+      <${BridgeMaterials} path="/bridge_materials" />
       <${CountryBridges} path="/country" />
       <${StateBridges} path="/state" />
       <${HeadToHead} path="/state_comparison" />
