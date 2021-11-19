@@ -184,6 +184,8 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
 
   useEffect(() => {
     if (!isEmpty(bridgeData) && d3Container.current && !submitted) {
+      const heightCheck = useMediaQuery("(min-height:500px)");
+
       const svg = d3.select(d3Container.current);
 
       let current_position;
@@ -258,13 +260,12 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
         .attr("stroke-width", "0.1em")
         .on("mouseover", function (event, d) {
           let data = d3.select(this).data()[0];
-
-          if (!heightCheck) {
-          svg.append(() => barChart(width, height, [data.x, data.y], data.objHistogram, bridgeData.field, color))
-          }
-
           setActiveHex(data);
           setHexSelected(true);
+
+          /* if (!heightCheck) {
+           * svg.append(() => barChart(width, height, [data.x, data.y], data.objHistogram, bridgeData.field, color))
+           * } */
           d3.select(this)
             .raise()
             .transition()
@@ -275,8 +276,8 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
             .attr("stroke-width", "0.2em");
         })
         .on("mouseout", function (event, d) {
-          d3.select("#toolBarChart").remove()
           setHexSelected(false);
+          const toolbarChart = d3.select("#toolBarChart").remove()
           d3.select(this)
             .transition()
             .duration(200)
@@ -342,16 +343,23 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
           Hover or click each hex to update the histogram.
         </${Typography}>
       </${Grid}>
-      </${Grid}>  
+      </${Grid}>
     </${Paper}>
   </${Grid}>
   ${heightCheck ? (html`
   <${Grid} container item xs=${12} md=${4}>
-  <${VerticalPropertyPanel} objSelected=${hexSelected}
-                    objData=${activeHex}
-                    initialHistData=${totalValues}
-                    initialKeyData=${bridgeData.keyData}
-                    field=${bridgeData.field}
-    /></${Grid}>`) : null}
+    <${VerticalPropertyPanel} objSelected=${hexSelected}
+                              objData=${activeHex}
+                              initialHistData=${totalValues}
+                              initialKeyData=${bridgeData.keyData}
+                              field=${bridgeData.field}
+                              /></${Grid}>`) : (html`
+  <${Grid} container item xs=${12}>
+    <${VerticalPropertyPanel} objSelected=${false}
+                              objData=${activeHex}
+                              initialHistData=${totalValues}
+                              initialKeyData=${bridgeData.keyData}
+                              field=${bridgeData.field}
+                              /></${Grid}>`)}
 `;
 }
