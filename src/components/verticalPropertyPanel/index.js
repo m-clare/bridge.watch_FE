@@ -37,9 +37,8 @@ export function VerticalPropertyPanel({
     barHeight = 300;
   }
 
-  console.log(field) 
   return html`
-  <${Paper} sx=${{ padding: 3, minHeight: { xs: 0, md: 600 } }}> 
+  <${Paper} sx=${{ padding: [2,3], minHeight: { xs: 0, md: 600 } }}> 
     <${Grid} item>
       <${Typography} variant="h5" component="h2">${locality} Histogram</${Typography}>
       <${PanelBarChart}

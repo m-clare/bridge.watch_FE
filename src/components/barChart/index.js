@@ -18,8 +18,8 @@ export function barChart(svgWidth, svgHeight, position, data, field) {
   const width = 400;
   const height = 200;
   const margins = {
-    left: 0.01 * width,
-    right: 0.01 * width,
+    left: 0.02 * width,
+    right: 0.02 * width,
     top: Math.min(0.205 * height, 48),
     bottom: Math.min(0.205 * height, 48),
   };
@@ -34,6 +34,7 @@ export function barChart(svgWidth, svgHeight, position, data, field) {
     adjustedPosition[1] = position[1] - height
   }
 
+  console.log(field)
   let x;
   if (field === "future_date_of_inspection") {
     const today = new Date();
@@ -41,7 +42,7 @@ export function barChart(svgWidth, svgHeight, position, data, field) {
     const max = addDays(min, 365);
     x = d3
       .scaleUtc()
-      .domain(data.map((d) => d[field]))
+      .domain([min, max])
       .range([margins.left + 8, width - (margins.right + 8)])
       .padding(0.1);
   } else {
@@ -139,7 +140,7 @@ export function barChart(svgWidth, svgHeight, position, data, field) {
     .attr("fill", "black")
     .attr("text-anchor", "middle")
     .attr("font-family", "sans-serif")
-    .attr("font-size", "1.0em")
+    .attr("font-size", "0.8em")
     .attr("x", (d) => x(d[field]) + x.bandwidth() / 2)
     .attr("dy", "-.5em")
     .attr("y", (d) => y(d.count))

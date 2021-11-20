@@ -146,17 +146,20 @@ const getAttribution = (svg) => {
 };
 
 
-export function HexbinChart({ bridgeData, plotType, submitted }) {
+export function DynamicHexbinChart({ bridgeData, plotType, submitted }) {
   const [activeHex, setActiveHex] = useState({});
   const [totalValues, setTotalValues] = useState({});
   const [hexSelected, setHexSelected] = useState(false);
   const [hexSize, setHexSize] = useState(true);
+  const [desktopView, setDesktopView] = useState(true);
+
+  const heightCheck = useMediaQuery("(min-height:500px)");
+
+  setDesktopView(heightCheck);
 
   const d3Container = useRef(null);
 
   const widthCheck = useMediaQuery("(min-width:600px)");
-
-  const heightCheck = useMediaQuery("(min-height:500px)");
 
   const handleSwitchChange = (event) => {
     setHexSize(!hexSize);
@@ -184,7 +187,7 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
 
   useEffect(() => {
     if (!isEmpty(bridgeData) && d3Container.current && !submitted) {
-      const heightCheck = useMediaQuery("(min-height:500px)");
+      
 
       const svg = d3.select(d3Container.current);
 
@@ -263,9 +266,9 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
           setActiveHex(data);
           setHexSelected(true);
 
-          /* if (!heightCheck) {
-           * svg.append(() => barChart(width, height, [data.x, data.y], data.objHistogram, bridgeData.field, color))
-           * } */
+          if (!heightCheck) {
+            svg.append(() => barChart(width, height, [data.x, data.y], data.objHistogram, bridgeData.field, color))}
+
           d3.select(this)
             .raise()
             .transition()
@@ -290,7 +293,7 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
       //add attribution
       const attrNode = getAttribution(svg);
       attrNode.select("#attribution").remove();
-
+ 
       attrNode
         .attr(
           "transform",
@@ -304,7 +307,9 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
         .attr("xlink:href", "https://twitter.com/eng_mclare")
         .text("www.bridge.watch @eng_mclare");
     }
-  }, [bridgeData, hexSize, plotType]);
+  }, [bridgeData, hexSize, plotType, desktopView]);
+
+  // const showLocalHist = desktopView && hexSelected
 
   return html`
   <${Grid} item xs=${12} md=${8}>
@@ -346,8 +351,8 @@ export function HexbinChart({ bridgeData, plotType, submitted }) {
       </${Grid}>
     </${Paper}>
   </${Grid}>
-  ${heightCheck ? (html`
-  <${Grid} container item xs=${12} md=${4}>
+  ${desktopView ? (html`
+    <${Grid} container item xs=${12} md=${4}>
     <${VerticalPropertyPanel} objSelected=${hexSelected}
                               objData=${activeHex}
                               initialHistData=${totalValues}
